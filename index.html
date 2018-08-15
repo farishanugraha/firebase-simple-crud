@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Firebase</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+	<!-- add user module -->
+	<section id="add-user-module" >
+		<form>
+			<h2>Add User</h2>
+			name:<br>
+			<input type='text' data-key='name' class='user-input'><br>
+			age:<br>
+			<input type='text' data-key='age' class='user-input'><br>
+			email:<br>
+			<input type='text' data-key='email' class='user-input'><br>
+			<button type='button' id="add-user-btn">add user</button>
+	 </form>
+	</section>
+
+	<hr>
+	<small><i>*click user to see details</i></small>
+	<small id="loading"><i>loading...</i></small>
+	<div id="userList">
+	</div>
+
+	<hr>
+
+	<div id="userDetail"></div>
+
+	<hr>
+
+	<!-- edit user module -->
+	<section id="edit-user-module">
+		<form>
+			<h2>Edit user</h2>
+			<input type="hidden" class="edit-userid">
+			name:<br>
+			<input type='text' data-key='name' class='edit-user-input'><br>
+			age:<br>
+			<input type='text' data-key='age' class='edit-user-input'><br>
+			email:<br>
+			<input type='text' data-key='email' class='edit-user-input'><br>
+			<button type='button' id="edit-user-btn">save</button>
+		</form>
+	</section>
+
+<script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+<script src="app.js"></script>
+	
+</body>
+</html>

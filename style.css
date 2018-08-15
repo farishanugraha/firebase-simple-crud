@@ -1,0 +1,12 @@
+#edit-user-module {
+	display: none;
+}
+
+#loading {
+	display: none;
+}
+
+button,
+li {
+	cursor: pointer !important;
+}
