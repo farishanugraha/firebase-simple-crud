@@ -1,54 +1,61 @@
-// Initialize Firebase
-var config = {
-	apiKey: "AIzaSyDcWPal33LFLDOqFyP2CUxx_H5BpBP8l0Q",
-	authDomain: "practice-164701.firebaseapp.com",
-	databaseURL: "https://practice-164701.firebaseio.com",
-	projectId: "practice-164701",
-	storageBucket: "practice-164701.appspot.com",
-	messagingSenderId: "377461018133"
-};
-firebase.initializeApp(config);
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+    console.log(user)
+    readData();
+    document.getElementById('logoutBtn').style.display = 'block';
+    document.getElementById('add-user-module').style.display = 'block';
+  } else {
+    // No user is signed in.
+    console.log('no user signedin')
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', logoutHandler)
 
 // Get Database & Collection
 const dbRef = firebase.database().ref();
 const usersRef = dbRef.child('users');
 const userListUI = document.getElementById("userList");
 
-// Read Data
-document.getElementById('loading').style.display = 'block'
-var count = 1;
-userListUI.innerHTML = '';
-usersRef.on("child_added", snap => {
-	let user = snap.val();
-	let $li = document.createElement("li");
-	$li.innerHTML = user.name;
+function readData(){
+	// Read Data
+	document.getElementById('loading').style.display = 'block'
+	var count = 1;
+	userListUI.innerHTML = '';
+	usersRef.on("child_added", snap => {
+		let user = snap.val();
+		let $li = document.createElement("li");
+		$li.innerHTML = user.name;
 
-	// edit icon
-	let editIconUI = document.createElement("span");
-	editIconUI.class = "edit-user";
-	editIconUI.innerHTML = " ✎";
-	editIconUI.setAttribute("userid", snap.key);
-	editIconUI.addEventListener("click", editButtonClicked)
-	$li.append(editIconUI);
+		// edit icon
+		let editIconUI = document.createElement("span");
+		editIconUI.class = "edit-user";
+		editIconUI.innerHTML = " ✎";
+		editIconUI.setAttribute("userid", snap.key);
+		editIconUI.addEventListener("click", editButtonClicked)
+		$li.append(editIconUI);
 
-	// delete icon
-	let deleteIconUI = document.createElement("span");
-	deleteIconUI.class = "delete-user";
-	deleteIconUI.innerHTML = " ☓";
-	deleteIconUI.setAttribute("userid", snap.key);
-	deleteIconUI.addEventListener("click", deleteButtonClicked)
-	$li.append(deleteIconUI)
-	
-	$li.setAttribute("child-key", snap.key); 
-	$li.addEventListener("click", userClicked)
+		// delete icon
+		let deleteIconUI = document.createElement("span");
+		deleteIconUI.class = "delete-user";
+		deleteIconUI.innerHTML = " ☓";
+		deleteIconUI.setAttribute("userid", snap.key);
+		deleteIconUI.addEventListener("click", deleteButtonClicked)
+		$li.append(deleteIconUI)
+		
+		$li.setAttribute("child-key", snap.key); 
+		$li.addEventListener("click", userClicked)
 
-	userListUI.append($li);
+		userListUI.append($li);
 
-	count++;
-	if(count === snap.numChildren()){
-		document.getElementById('loading').style.display = 'none'
-	}
-});
+		count++;
+		if(count === snap.numChildren()){
+			document.getElementById('loading').style.display = 'none'
+		}
+	});	
+}
+
 
 function userClicked(e) {
 	var userID = e.target.getAttribute("child-key");
@@ -142,4 +149,15 @@ function addUserBtnClicked(){
 	usersRef.push(newUser, function(){
 		console.log("data has been inserted");
 	})
+}
+
+function logoutHandler(){
+	firebase.auth().signOut().then(function() {
+		// Sign-out successful.
+		console.log('signout success')
+		window.location.reload();
+	}).catch(function(error) {
+		// An error happened.
+		console.log(error)
+	});
 }

@@ -1,8 +1,7 @@
-#edit-user-module {
-	display: none;
-}
-
-#loading {
+#add-user-module,
+#edit-user-module,
+#loading,
+#logoutBtn {
 	display: none;
 }
 
